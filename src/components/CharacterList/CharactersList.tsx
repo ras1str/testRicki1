@@ -20,10 +20,15 @@ const CharactersList: React.FC = () => {
     );
   }
 
-  const pageHandler = (action: boolean) => {
-    if (page <= 1 && action == false) {
-    } else {
-      action ? setPage((page) => page + 1) : setPage((page) => page - 1);
+  const pageDicrement = () => {
+    if (page > 1) {
+      setPage((page) => page - 1);
+    }
+  };
+
+  const pageIncrement = () => {
+    if (page < 42) {
+      setPage((page) => page + 1);
     }
   };
 
@@ -32,12 +37,12 @@ const CharactersList: React.FC = () => {
   return (
     <>
       <div className="d-flex justify-content-center align-items-center">
-        <Button onClick={() => pageHandler(false)}>❮ </Button>
+        <Button onClick={() => pageDicrement()}>❮ </Button>
         {data && data.info.prev ? <Button>{data?.info.prev?.slice(-1)}</Button> : ''}
         <Button>{page}</Button>
         {data && data.info.next ? <Button>{data?.info.next?.slice(-1)}</Button> : ''}
 
-        <Button onClick={() => pageHandler(true)}> ❯</Button>
+        <Button onClick={() => pageIncrement()}> ❯</Button>
       </div>
 
       <Row>
