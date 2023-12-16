@@ -1,7 +1,7 @@
 import { Character } from '../../Interfaces';
 import { api } from './api';
 
-interface CharacterData {
+export interface CharacterData {
   info: {
     next: string;
     prev: string;

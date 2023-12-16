@@ -6,45 +6,31 @@ import { Loader } from '../UI/Loader';
 import FilterCharacter from '../Filter/FilterCharacter';
 import { Character } from '../../Interfaces';
 import { Button, Col, Row } from 'react-bootstrap';
-import { useGetCharactersQuery } from '../../store/api/characters.api';
+import { CharacterData, useGetCharactersQuery } from '../../store/api/characters.api';
 
-const CharactersList: React.FC = () => {
-  const [page, setPage] = useState(1);
-  const { data, isLoading } = useGetCharactersQuery(page);
+type Props = {
+  data: CharacterData;
+  pageIncrement: () => void;
+  pageDicrement: () => void;
+  page: number;
+};
 
-  if (isLoading) {
-    return (
-      <div className={styles.loader}>
-        <Loader />
-      </div>
-    );
-  }
-
-  const pageDicrement = () => {
-    if (page > 1) {
-      setPage((page) => page - 1);
-    }
-  };
-
-  const pageIncrement = () => {
-    if (page < 42) {
-      setPage((page) => page + 1);
-    }
-  };
-
-  console.log(data);
-
+export const Pagination = ({ data, pageIncrement, pageDicrement, page }: Props) => {
   return (
-    <>
-      <div className="d-flex justify-content-center align-items-center">
-        <Button onClick={() => pageDicrement()}>❮ </Button>
-        {data && data.info.prev ? <Button>{data?.info.prev?.slice(-1)}</Button> : ''}
-        <Button>{page}</Button>
-        {data && data.info.next ? <Button>{data?.info.next?.slice(-1)}</Button> : ''}
+    <div className="d-flex justify-content-center align-items-center">
+      <Button onClick={() => pageDicrement()}>❮ </Button>
+      {data && data.info.prev ? <Button>{data?.info.prev?.slice(-1)}</Button> : ''}
+      <Button>{page}</Button>
+      {data && data.info.next ? <Button>{data?.info.next?.slice(-1)}</Button> : ''}
 
-        <Button onClick={() => pageIncrement()}> ❯</Button>
-      </div>
+      <Button onClick={() => pageIncrement()}> ❯</Button>
+    </div>
+  );
+};
 
+const CharactersList = ({ data }: { data: CharacterData }) => {
+  return (
+    <div>
       <Row>
         {data &&
           data.results.map((character) => (
@@ -58,11 +44,10 @@ const CharactersList: React.FC = () => {
                 status={character.status}
                 gender={character.gender}
               />
-              <NavLink to={`${character.id}`}>Полная информация</NavLink>
             </Col>
           ))}
       </Row>
-    </>
+    </div>
   );
 };
 
